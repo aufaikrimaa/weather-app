@@ -1,64 +1,38 @@
 import { useEffect } from "react";
-import owmApi from "./api/owmApi";
-import { Country, City } from "country-state-city";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchCurrentWeather } from "./redux/slice/weatherSlice";
+import { fetchForecast } from "./redux/slice/forecastSlice";
+import { fetchAirPollution } from "./redux/slice/pollutionSlice";
+import { City } from "country-state-city";
 
 function App() {
+  const dispatch = useDispatch();
+  const { weatherData, status, error } = useSelector((state) => state.weather);
+  const { forecastData } = useSelector((state) => state.forecast);
+  const { airPollutionData } = useSelector((state) => state.pollution);
+
+  useEffect(() => {
+    const params = {
+      lat: -7.5484,
+      lon: 110.3097,
+      units: "metric",
+      lang: "ID",
+    };
+    dispatch(fetchCurrentWeather(params));
+    dispatch(fetchForecast(params));
+    dispatch(fetchAirPollution(params));
+    // airPollution();
+  }, [dispatch]);
+
   const cityData = City.getAllCities();
 
   const filteredCity = cityData.filter((city) =>
     city.name.toLowerCase().includes("Magelang".toLowerCase())
   );
-  console.log(filteredCity);
 
-  const currentWeather = async () => {
-    try {
-      const params = {
-        lat: -7.5484,
-        lon: 110.3097,
-        units: "metric",
-      };
-      const data = await owmApi.getCurrentWeather({ params });
-      console.log(data.data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const forecast5days = async () => {
-    try {
-      const params = {
-        lat: -7.5484,
-        lon: 110.3097,
-        units: "metric",
-        lang: "ID",
-      };
-      const data = await owmApi.getForecast5days({ params });
-      console.log(data.data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const airPollution = async () => {
-    try {
-      const params = {
-        lat: -7.5484,
-        lon: 110.3097,
-        units: "metric",
-        lang: "ID",
-      };
-      const data = await owmApi.getAirPolluion({ params });
-      console.log(data.data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  useEffect(() => {
-    currentWeather();
-    forecast5days();
-    airPollution();
-  }, []);
+  console.log(weatherData);
+  console.log(forecastData);
+  console.log(airPollutionData);
 
   return (
     <>

@@ -10,7 +10,7 @@ const owmApi = {
     axiosInstance.get(endpoint.wedata + "weather?", params),
   getForecast5days: (params) =>
     axiosInstance.get(endpoint.wedata + "forecast?", params),
-  getAirPolluion: (params) =>
+  getAirPollution: (params) =>
     axiosInstance.get(endpoint.wedata + "air_pollution?", params),
   getGeoLocation: (params) =>
     axiosInstance.get(endpoint.geo + "direct?", params),
