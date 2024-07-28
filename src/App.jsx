@@ -3,16 +3,16 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchCurrentWeather } from "./redux/slice/weatherSlice";
 import { fetchForecast } from "./redux/slice/forecastSlice";
 import { fetchAirPollution } from "./redux/slice/pollutionSlice";
-import { City, Country } from "country-state-city";
+import { City } from "country-state-city";
 import { FixedSizeList as List } from "react-window";
 import debounce from "lodash/debounce";
 import iso3166Country from "iso-3166-1";
 import iso3166State from "iso-3166-2";
 import apiConfig from "./api/apiConfig";
+import CurrentWeather from "./components/CurrentWeather";
 
 function App() {
   const dispatch = useDispatch();
-  const { weatherData, status, error } = useSelector((state) => state.weather);
   const { forecastData } = useSelector((state) => state.forecast);
   const { airPollutionData } = useSelector((state) => state.pollution);
 
@@ -67,7 +67,9 @@ function App() {
 
   const pollutanIndex = ["Good", "Fair", "Moderate", "Poor", "Very Poor"];
 
-  const components = Object.keys(airPollutionData.list[0].components);
+  const components = airPollutionData?.list
+    ? Object.keys(airPollutionData.list[0].components)
+    : [];
 
   const kimia = {
     co: "CO",
@@ -82,7 +84,7 @@ function App() {
 
   // console.log(weatherData);
   // console.log(forecastData);
-  console.log(airPollutionData);
+  // console.log(airPollutionData);
   // console.log(chosenCity);
 
   return (
@@ -131,11 +133,7 @@ function App() {
             getCountryName(chosenCity.countryCode)
           : ""}
       </div>
-      <div>{weatherData?.weather[0].main}</div>
-      <div>{weatherData?.weather[0].description}</div>
-      <div>
-        <img src={apiConfig.iconUrl(weatherData?.weather[0].icon)} />
-      </div>
+      <CurrentWeather />
 
       <div className="flex flex-wrap gap-2">
         {forecastData?.list.map((item, i) => (
