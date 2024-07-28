@@ -1,14 +1,18 @@
 import axiosInstance from "./axiosInstance";
 
+const endpoint = {
+  wedata: "data/2.5/",
+  geo: "geo/1.0/",
+};
+
 const owmApi = {
-  getCurrentWeather: (params) => {
-    const url = "weather?";
-    return axiosInstance.get(url, params);
-  },
-  getForecast5days: (params) => {
-    const url = "forecast?";
-    return axiosInstance.get(url, params);
-  },
+  getCurrentWeather: (params) =>
+    axiosInstance.get(endpoint.wedata + "weather?", params),
+  getForecast5days: (params) =>
+    axiosInstance.get(endpoint.wedata + "forecast?", params),
+  getAirPolluion: (params) =>
+    axiosInstance.get(endpoint.wedata + "air_pollution?", params),
+  getGeo: (params) => axiosInstance.get(endpoint.geo + "direct?", params),
 };
 
 export default owmApi;

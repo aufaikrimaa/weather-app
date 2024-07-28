@@ -25,7 +25,34 @@ function App() {
         lang: "ID",
       };
       const data = await owmApi.getForecast5days({ params });
-      console.log(data);
+      console.log(data.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const airPollution = async () => {
+    try {
+      const params = {
+        lat: -7.5484,
+        lon: 110.3097,
+        units: "metric",
+        lang: "ID",
+      };
+      const data = await owmApi.getAirPolluion({ params });
+      console.log(data.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const geoLocation = async () => {
+    try {
+      const params = {
+        q: "Magelang",
+      };
+      const data = await owmApi.getGeo({ params });
+      console.log(data.data);
     } catch (error) {
       console.log(error);
     }
@@ -34,6 +61,8 @@ function App() {
   useEffect(() => {
     currentWeather();
     forecast5days();
+    airPollution();
+    geoLocation();
   }, []);
 
   return (
