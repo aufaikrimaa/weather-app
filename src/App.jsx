@@ -65,9 +65,24 @@ function App() {
     return stateData ? stateData.name : stateCode;
   };
 
+  const pollutanIndex = ["Good", "Fair", "Moderate", "Poor", "Very Poor"];
+
+  const components = Object.keys(airPollutionData.list[0].components);
+
+  const kimia = {
+    co: "CO",
+    no: "NO",
+    no2: "NO2",
+    o3: "O3",
+    so2: "SO2",
+    pm2_5: "PM2.5",
+    pm10: "PM10",
+    nh3: "NH3",
+  };
+
   // console.log(weatherData);
   // console.log(forecastData);
-  // console.log(airPollutionData);
+  console.log(airPollutionData);
   // console.log(chosenCity);
 
   return (
@@ -130,6 +145,17 @@ function App() {
             <div>
               <img src={apiConfig.iconUrl(item.weather[0].icon)} />
             </div>
+          </div>
+        ))}
+      </div>
+      <div>
+        Air Condition : {pollutanIndex[airPollutionData?.list[0].main.aqi - 1]}
+      </div>
+      <div>
+        {components.map((item, i) => (
+          <div key={i}>
+            {kimia[item] + ": " + airPollutionData.list[0].components[item]}{" "}
+            μg/m3
           </div>
         ))}
       </div>
