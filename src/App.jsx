@@ -1,7 +1,15 @@
 import { useEffect } from "react";
 import owmApi from "./api/owmApi";
+import { Country, City } from "country-state-city";
 
 function App() {
+  const cityData = City.getAllCities();
+
+  const filteredCity = cityData.filter((city) =>
+    city.name.toLowerCase().includes("Magelang".toLowerCase())
+  );
+  console.log(filteredCity);
+
   const currentWeather = async () => {
     try {
       const params = {
@@ -46,23 +54,10 @@ function App() {
     }
   };
 
-  const geoLocation = async () => {
-    try {
-      const params = {
-        q: "Magelang",
-      };
-      const data = await owmApi.getGeo({ params });
-      console.log(data.data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   useEffect(() => {
     currentWeather();
     forecast5days();
     airPollution();
-    geoLocation();
   }, []);
 
   return (
